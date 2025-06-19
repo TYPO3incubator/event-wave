@@ -1,0 +1,10 @@
+<small>
+    🕓 Date
+    <f:if condition="!{startDateTime} && !{endDateTime}">TBA</f:if>
+    <f:if condition="{startDateTime}">
+        <span class="event-start-date">{startDateTime -> f:format.date(format: 'd.m.Y g:i a')}</span>
+    </f:if>
+    <f:if condition="{endDateTime}">
+        - <span class="event-end-date">{endDateTime -> f:format.date(format: 'd.m.Y g:i a')}</span>
+    </f:if>
+</small>

@@ -1,0 +1,107 @@
+<html
+        xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+        xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+        xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+        data-namespace-typo3-fluid="true">
+
+<f:layout name="Backend"/>
+
+<f:section name="Content">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h1>Event Registrations</h1>
+                <div class="col-12 col-sm-6 col-md-4 col-xl-12 mb-3">
+                    <div class="card shadow-none rounded-0 h-100">
+                        <div class="card-body flex-grow-0 pb-3">
+                            <h3 class="card-title mb-2">{event.title}</h3>
+                            <div class="d-flex flex-column flex-wrap gap-1 mt-2">
+                                <div class="d-flex flex-wrap gap-1">
+                                    <f:if condition="{event.startDateTime} > 0">
+                                        <f:then>
+                                            <span class="badge d-flex flex-row align-items-center gap-1 flex-wrap flex-grow-0 badge-beta">Start: {event.startDateTime -> f:format.date(format: 'd.m.Y g:i a')}</span>
+                                        </f:then>
+                                        <f:else>
+                                            <span class="badge badge-danger">Start: No Start-Date!</span>
+                                        </f:else>
+                                    </f:if>
+                                    <f:if condition="{event.endDateTime} > 0">
+                                        <f:then>
+                                            <span class="badge d-flex flex-row align-items-center gap-1 flex-wrap flex-grow-0 badge-beta">End: {event.endDateTime -> f:format.date(format: 'd.m.Y g:i a')}</span>
+                                        </f:then>
+                                        <f:else>
+                                            <span class="badge badge-danger">End: No End-Date!</span>
+                                        </f:else>
+                                    </f:if>
+                                </div>
+                                <div class="d-flex flex-wrap gap-1">
+                                    <span class="badge d-flex flex-row align-items-center gap-1 flex-wrap flex-grow-0 badge-default">
+                                        <core:icon identifier="actions-calendar-alternative"/>
+                                        <span>{event.eventType -> f:format.case(mode: 'capital')}</span>
+                                    </span>
+                                    <span class="badge d-flex flex-row align-items-center gap-1 flex-wrap flex-grow-0 badge-default">
+                                        <core:icon identifier="actions-unlock"/>
+                                        <span>Registration</span>
+                                    </span>
+                                    <span class="badge d-flex flex-row align-items-center gap-1 flex-wrap flex-grow-0 badge-default">
+                                        <core:icon identifier="actions-user"/>
+                                        <span>
+                                            {event.registration -> f:count()}
+                                            <f:if condition="{event.registration -> f:count()} == 1">
+                                                <f:then>Registration</f:then>
+                                                <f:else>Registrations</f:else>
+                                            </f:if>
+                                        </span>
+                                    </span>
+                                    <f:if condition="{event.eventType} !== 'standard'">
+                                        <span class="badge d-flex flex-row align-items-center gap-1 flex-wrap flex-grow-0 badge-default">
+                                            <core:icon identifier="content-clock" size="small"/>
+                                            <span>
+                                                {event.appointment -> f:count()}
+                                                <f:if condition="{event.appointment -> f:count()} == 1">
+                                                <f:then>Appointment</f:then>
+                                                <f:else>Appointments</f:else>
+                                            </f:if>
+                                            </span>
+                                        </span>
+                                    </f:if>
+
+
+                                    <span class="badge d-flex flex-row align-items-center gap-1 flex-wrap flex-grow-0 badge-default">
+                                        <core:icon identifier="content-map" size="small"/>
+                                        <f:if condition="{event.location}">
+                                            <f:then><span>{event.location.name}</span></f:then>
+                                            <f:else><span>No Location!</span></f:else>
+                                        </f:if>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-xl-12 mb-3">
+                    <div class="card shadow-none rounded-0 h-100">
+                        <div class="card-body">
+                            <f:if condition="{event.registration}">
+                                <f:then>
+                                    <f:for each="{event.registration}" as="registration">
+                                        <div class="appointment d-flex flex-row align-items-center gap-2">
+                                            <div class="d-flex flex-column flex-grow-1">
+                                                <p class="mb-0">{registration.email}</p>
+                                            </div>
+                                        </div>
+                                    </f:for>
+                                </f:then>
+                                <f:else>
+                                    <p>There are no reservations for this Event!</p>
+                                </f:else>
+                            </f:if>
+                        </div>
+                    </div>
+                </div>
+                <f:link.action action="index" class="btn btn-secondary">Back to Dashboard</f:link.action>
+            </div>
+        </div>
+    </div>
+</f:section>
+</html>

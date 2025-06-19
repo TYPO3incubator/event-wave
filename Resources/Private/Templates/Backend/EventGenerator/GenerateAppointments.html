@@ -1,0 +1,135 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true">
+
+<f:layout name="Backend" />
+
+<f:section name="Content">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h1>Appointments Generation</h1>
+                <div class="col-12 col-sm-12 col-md-12 col-xl-12 mb-3">
+                    <div class="card shadow-none rounded-0 h-100">
+                        <div class="card-body flex-grow-0 pb-3">
+                            <h3 class="card-title mb-2">{event.title}</h3>
+                            <div class="d-flex flex-column flex-wrap gap-1 mt-2">
+                                <div class="d-flex flex-wrap gap-1">
+                                    <f:if condition="{event.startDateTime} > 0">
+                                        <f:then>
+                                            <span class="badge d-flex flex-row align-items-center gap-1 flex-wrap flex-grow-0 badge-beta">Start: {event.startDateTime -> f:format.date(format: 'd.m.Y g:i a')}</span>
+                                        </f:then>
+                                        <f:else>
+                                            <span class="badge badge-danger">Start: No Start-Date!</span>
+                                        </f:else>
+                                    </f:if>
+                                    <f:if condition="{event.endDateTime} > 0">
+                                        <f:then>
+                                            <span class="badge d-flex flex-row align-items-center gap-1 flex-wrap flex-grow-0 badge-beta">End: {event.endDateTime -> f:format.date(format: 'd.m.Y g:i a')}</span>
+                                        </f:then>
+                                        <f:else>
+                                            <span class="badge badge-danger">End: No End-Date!</span>
+                                        </f:else>
+                                    </f:if>
+                                </div>
+                                <div class="d-flex flex-wrap gap-1">
+                                    <span class="badge d-flex flex-row align-items-center gap-1 flex-wrap flex-grow-0 badge-default">
+                                        <core:icon identifier="actions-calendar-alternative"/>
+                                        <span>{event.eventType -> f:format.case(mode: 'capital')}</span>
+                                    </span>
+                                    <span class="badge d-flex flex-row align-items-center gap-1 flex-wrap flex-grow-0 badge-default">
+                                        <core:icon identifier="actions-unlock"/>
+                                        <span>Registration</span>
+                                    </span>
+                                    <f:if condition="{event.eventType} !== 'standard'">
+                                        <span class="badge d-flex flex-row align-items-center gap-1 flex-wrap flex-grow-0 badge-default">
+                                            <core:icon identifier="content-clock" size="small"/>
+                                            <span>
+                                                {event.appointment -> f:count()}
+                                                <f:if condition="{event.appointment -> f:count()} == 1">
+                                                <f:then>Appointment</f:then>
+                                                <f:else>Appointments</f:else>
+                                            </f:if>
+                                            </span>
+                                        </span>
+                                    </f:if>
+                                    <span class="badge d-flex flex-row align-items-center gap-1 flex-wrap flex-grow-0 badge-default">
+                                        <core:icon identifier="actions-user"/>
+                                        <span>
+                                            {event.registration -> f:count()}
+                                            <f:if condition="{event.registration -> f:count()} == 1">
+                                                <f:then>Registration</f:then>
+                                                <f:else>Registrations</f:else>
+                                            </f:if>
+                                        </span>
+                                    </span>
+                                    <span class="badge d-flex flex-row align-items-center gap-1 flex-wrap flex-grow-0 badge-default">
+                                        <core:icon identifier="content-map" size="small"/>
+                                        <f:if condition="{event.location}">
+                                            <f:then><span>{event.location.name}</span></f:then>
+                                            <f:else><span>No Location!</span></f:else>
+                                        </f:if>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="appointments_generator" data-event-uid="{event.uid}" class="mb-4"></div>
+                <div class="d-flex justify-content-between">
+                    <button id="submit-button" class="btn btn-success">Store the Appointments</button>
+                    <f:link.action action="index" class="btn btn-secondary">Back to Dashboard</f:link.action>
+                </div>
+            </div>
+        </div>
+    </div>
+    <f:asset.css identifier="editor">
+        .starrating{direction:rtl;display:inline-block;white-space:nowrap}.starrating>input{display:none}.starrating>label:before{content:'\2606';margin:1px;font-size:18px;font-style:normal;font-weight:400;line-height:1;font-family:Arial;display:inline-block}.starrating>label{color:#888;cursor:pointer;margin:0;margin:8px 0 2px 0}.starrating>label.starrating-display-enabled{margin:1px 0 0 0}.starrating:not(.readonly)>input:hover~label,.starrating>input:checked~label{color:#ffca08}.starrating:not(.readonly)>input:hover~label:before,.starrating>input:checked~label:before{content:'\2605';text-shadow:0 0 1px rgba(0,20,20,1)}.starrating .starrating-display{position:relative;direction:rtl;text-align:center;font-size:10px;line-height:0}
+        span.h3.card-title.level-2 {
+            display: flex !important;
+            justify-content: space-between;
+            width: 100%;
+        }
+        .btn-group>.btn {
+                border-radius: 0;
+        }
+        div[data-schemaid="root"] .card {
+            border-radius: 0 !important;
+            box-shadow: none !important;
+        }
+        div[data-schemaid="root"] > span.h3 > button.json-editor-btn-collapse {
+            display: none;
+        }
+        div[data-schematype="array"] > div.card.card-body.my-3.bg-light > span.btn-group button {
+            background: #43ad00;
+            border: none;
+        }
+
+        button.json-editor-btntype-delete {
+            margin-bottom: .5rem;
+            background: #fa5d5d;
+            border: none;
+        }
+
+        button.json-editor-btntype-deleteall {
+            margin-left: .5rem !important;
+            background: red;
+            border: none;
+        }
+
+        div[data-schematype="array"] > div.card.card-body.my-3.bg-light > span.btn-group button.json-editor-btntype-deleteall {
+            background: #fa5d5d;
+            border: none;
+        }
+
+        div[data-schemaid="root"] > .card.card-body.my-3.bg-light {
+            border: none !important;
+            padding: 0;
+        }
+
+    </f:asset.css>
+</f:section>
+</html>

@@ -1,0 +1,87 @@
+<f:render partial="AdditionalCSS"></f:render>
+
+<f:asset.script
+    identifier="get-event-datetime"
+    src="EXT:surfcamp_events/Resources/Public/JavaScript/get_event_datetimes.js"
+/>
+
+<f:flashMessages as="flashMessages">
+    <f:for each="{flashMessages}" as="flashMessage">
+        <div class="alert alert-primary" role="alert">
+            <h5 class="alert-heading">{flashMessage.title}</h5>
+            <p>{flashMessage.message}</p>
+        </div>
+    </f:for>
+</f:flashMessages>
+
+<div class="event" data-id="{event.uid}">
+    <h3>{event.title}</h3>
+    <f:render
+        partial="Location"
+        arguments="{location: event.location}"
+    ></f:render
+    ><br />
+    <f:render
+        partial="Date"
+        arguments="{startDateTime: event.startDateTime, endDateTime: event.endDateTime}"
+    ></f:render>
+
+    <p>{event.description}</p>
+
+    <f:if condition="{googleCalendarUrl}">
+        <p class="fs-6">
+            <a href="{googleCalendarUrl}" target="_blank"
+                >Add to Google Calendar</a
+            >
+        </p>
+    </f:if>
+
+    <f:if condition="{event.appointment}">
+        <f:for each="{event.appointment}" as="appointment">
+            <div class="card appointment" data-id="{appointment.uid}">
+                <h5 class="card-title">{appointment.title}</h5>
+                <div class="card-body">
+                    <f:render
+                        partial="Location"
+                        arguments="{location: appointment.location}"
+                    ></f:render
+                    ><br />
+                    <f:render
+                        partial="Date"
+                        arguments="{startDateTime: appointment.startDateTime, endDateTime: appointment.endDateTime}"
+                    ></f:render>
+                    <f:if condition="{appointment.isOpenForRegistrations}">
+                        <f:form
+                            action="processAppointmentRegistration"
+                            controller="Registration"
+                            objectName="appointment"
+                            object="{appointment}"
+                            method="post"
+                        >
+                            <f:render partial="SignUpForm"></f:render>
+                            <f:form.hidden
+                                name="event"
+                                value="{event}"
+                            ></f:form.hidden>
+                        </f:form>
+                    </f:if>
+                </div>
+            </div>
+        </f:for>
+    </f:if>
+
+    <f:if
+        condition="{event.isOpenForRegistrations} && !{isInPast} && !{event.appointment}"
+    >
+        <h4>Sign Up</h4>
+        <f:form
+            action="processRegistration"
+            controller="Registration"
+            objectName="event"
+            object="{event}"
+            method="post"
+        >
+            <f:render partial="SignUpForm"></f:render>
+        </f:form>
+    </f:if>
+</div>

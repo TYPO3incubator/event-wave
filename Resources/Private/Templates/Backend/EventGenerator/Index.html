@@ -1,0 +1,156 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true">
+
+<f:layout name="Backend" />
+
+<f:section name="Content">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h1>Event Management</h1>
+                <p>Generate Appointments for your Events</p>
+                <be:link.newRecord class="btn btn-info" table="{events.newTable}" returnUrl="{events.newReturn}" pid="{events.newPid}">
+                    <core:icon identifier="actions-placeholder-add" size="small" />
+                    <span>Neues Event erstellen</span>
+                </be:link.newRecord>
+                <be:link.newRecord class="btn btn-info" table="{newLocationTable}" returnUrl="{newLocationReturn}" pid="{newLocationPid}">
+                    <core:icon identifier="content-map" size="small" />
+                    <span>Neue Location erstellen</span>
+                </be:link.newRecord>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="events d-flex flex-column mt-4">
+                    <div class="row">
+                        <div class="col-12">
+                            <h3 class="mb-3">Events ({events.count})</h3>
+                        </div>
+                        <div class="col-12">
+                            <f:form class="d-flex flex-row mb-4" method="POST" object="searchForm" action="{f:uri.action(action:'index')}">
+                                <f:form.textfield name="search" type="search" value="{events.search}" class="form-control flex-grow-0" placeholder="Search for an Event by Title" />
+                            </f:form>
+                        </div>
+                        <f:for each="{events.paginator.paginatedItems}" as="event">
+                            <div class="col-12 col-sm-6 col-md-4 col-xl-4 mb-3">
+                                <div class="card shadow-none rounded-0 h-100">
+                                    <div class="card-body flex-grow-0 pb-3">
+                                        <h3 class="card-title mb-2">{event.title}</h3>
+                                        <div class="d-flex flex-column flex-wrap gap-1 mt-2">
+                                            <div class="d-flex flex-wrap gap-1">
+                                                <f:if condition="{event.startDateTime} > 0">
+                                                    <f:then>
+                                                        <span class="badge d-flex flex-row align-items-center gap-1 flex-wrap flex-grow-0 badge-beta">Start: {event.startDateTime -> f:format.date(format: 'd.m.Y g:i a')}</span>
+                                                    </f:then>
+                                                    <f:else>
+                                                        <span class="badge badge-danger">Start: No Start-Date!</span>
+                                                    </f:else>
+                                                </f:if>
+                                                <f:if condition="{event.endDateTime} > 0">
+                                                    <f:then>
+                                                        <span class="badge d-flex flex-row align-items-center gap-1 flex-wrap flex-grow-0 badge-beta">End: {event.endDateTime -> f:format.date(format: 'd.m.Y g:i a')}</span>
+                                                    </f:then>
+                                                    <f:else>
+                                                        <span class="badge badge-danger">End: No End-Date!</span>
+                                                    </f:else>
+                                                </f:if>
+                                            </div>
+                                            <div class="d-flex flex-wrap gap-1">
+                                                <span class="badge d-flex flex-row align-items-center gap-1 flex-wrap flex-grow-0 badge-default">
+                                                    <core:icon identifier="actions-calendar-alternative" />
+                                                    <span>{event.eventType -> f:format.case(mode: 'capital')}</span>
+                                                </span>
+                                                <f:if condition="{event.eventType} !== 'standard'">
+                                                <span class="badge d-flex flex-row align-items-center gap-1 flex-wrap flex-grow-0 badge-default">
+                                                    <core:icon identifier="content-clock" size="small" />
+                                                    <span>{event.appointment -> f:count()} Appointments</span>
+                                                </span>
+                                                </f:if>
+                                                <f:if condition="{event.isOpenForRegistrations}">
+                                                    <span class="badge d-flex flex-row align-items-center gap-1 flex-wrap flex-grow-0 badge-default">
+                                                    <core:icon identifier="actions-unlock" />
+                                                    <span>Registration</span>
+                                                </span>
+                                                <span class="badge d-flex flex-row align-items-center gap-1 flex-wrap flex-grow-0 badge-default">
+                                                    <core:icon identifier="actions-user" />
+                                                    <span>{event.registration -> f:count()}</span>
+                                                    <f:if condition="{event.registration -> f:count()} == 1">
+                                                        <f:then>
+                                                            <span>Registration</span>
+                                                        </f:then>
+                                                    <f:else>
+                                                        <span>Registrations</span>
+                                                    </f:else>
+                                                    </f:if>
+                                                </span>
+                                                </f:if>
+                                                <span class="badge d-flex flex-row align-items-center gap-1 flex-wrap flex-grow-0 badge-default">
+                                                    <core:icon identifier="content-map" size="small" />
+                                                    <f:if condition="{event.location}">
+                                                        <f:then><span>{event.location.name}</span></f:then>
+                                                        <f:else><span>No Location!</span></f:else>
+                                                    </f:if>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer flex-grow-1" style="background-color: #dddddd;">
+                                        <div class="actions d-block w-full">
+                                            <div class="row">
+                                                <div class="col-6 d-flex flex-column align-items-start justify-content-start gap-2">
+                                                    <be:link.editRecord class="btn btn-link" uid="{event.uid}" table="{events.newTable}" returnUrl="{events.newReturn}">
+                                                        <core:icon identifier="actions-document-edit" size="small" />
+                                                        <span>Edit Event</span>
+                                                    </be:link.editRecord>
+                                                    <f:if condition="{event.eventType} !== 'standard'">
+                                                        <f:link.action type="button" disabled="disabled" action="generateAppointments" arguments="{event: event}" class="btn btn-link">
+                                                            <core:icon identifier="actions-form-insert-in" size="small" />
+                                                            <span>Generate Appointments</span>
+                                                        </f:link.action>
+                                                    </f:if>
+                                                </div>
+                                                <div class="col-6 d-flex flex-column align-items-start justify-content-start gap-2">
+                                                    <f:if condition="{event.eventType} !== 'standard'">
+                                                        <f:link.action action="appointmentsOverview" arguments="{event: event}" class="btn btn-link">
+                                                            <core:icon identifier="actions-list" size="small" />
+                                                            <span>Appointments Overview</span>
+                                                        </f:link.action>
+                                                    </f:if>
+                                                    <f:link.action action="registrationsOverview" arguments="{event: event.uid}" class="btn btn-link">
+                                                        <core:icon identifier="content-user" size="small" />
+                                                        <span>Registrations Overview</span>
+                                                    </f:link.action>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </f:for>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <ul class="pagination">
+                                <f:for each="{events.pagination.allPageNumbers}" as="page">
+                                    <li class="page-item">
+                                        <f:link.action
+                                                arguments="{currentPageNumber:page}"
+                                                class="page-link {f:if(condition:'{events.currentPageNumber}== {page}',then:'active')}"
+                                        >
+                                            {page}
+                                        </f:link.action>
+                                    </li>
+                                </f:for>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</f:section>
+</html>

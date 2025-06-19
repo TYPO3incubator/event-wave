@@ -1,0 +1,136 @@
+{
+  "title": "Appointment Generation",
+  "description": "TODO: Add an short and self-explaning description here.",
+  "type": "object",
+  "format": "table",
+  "required": [],
+  "properties": {
+    "singleEvents": {
+      "type": "array",
+      "format": "normal",
+      "title": "Single Appointments",
+      "description": "Here you can Add Single Appointments to the",
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "title": "Appointment (Single Date)",
+        "properties": {
+          "title": {
+            "title": "Single Appointments",
+            "description": "Here you can Add Single Appointments to the",
+            "type": "string",
+            "format": "text",
+            "options": {
+              "flatpickr": {}
+            }
+          },
+          "description": {
+            "type": "string",
+            "format": "textarea",
+            "options": {
+              "flatpickr": {}
+            }
+          },
+          "date_from": {
+            "type": "string",
+            "format": "datetime-local",
+            "options": {
+              "flatpickr": {}
+            }
+          },
+          "date_to": {
+            "type": "string",
+            "format": "datetime-local",
+            "options": {
+              "flatpickr": {}
+            }
+          },
+          "is_open_for_registrations": {
+            "type": "boolean",
+            "format": "checkbox",
+          },
+
+
+        }
+      },
+      "default": []
+    },
+    "recurringAppointments": {
+      "type": "array",
+      "format": "table",
+      "title": "Recurring Appointments",
+      "description": "TODO: Add an short and self-explaning description here.",
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "title": "Appointment (Date Range)",
+        "properties": {
+          "date_from": {
+            "type": "string",
+            "format": "datetime-local",
+            "options": {
+              "flatpickr": {}
+            }
+          },
+          "date_to": {
+            "type": "string",
+            "format": "date",
+            "options": {
+              "flatpickr": {}
+            }
+          }
+        }
+      },
+      "default": []
+    },
+    "appointmentSingleExclusions": {
+      "type": "array",
+      "format": "table",
+      "title": "Appointment Exclusions (Single Date)",
+      "description": "TODO: Add an short and self-explaning description here.",
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "title": "Appointment Exclusion (Single Date)",
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "datetime-local",
+            "options": {
+              "flatpickr": {}
+            }
+          }
+        }
+      },
+      "default": []
+    },
+    "appointmentRangeExclusions": {
+      "type": "array",
+      "format": "table",
+      "title": "Appointment Exclusions (Date Range)",
+      "description": "TODO: Add an short and self-explaning description here.",
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "title": "Appointment Exclusion (Date Range)",
+        "properties": {
+          "date_from": {
+            "type": "string",
+            "format": "datetime-local",
+            "options": {
+              "flatpickr": {}
+            }
+          },
+          "date_to": {
+            "type": "string",
+            "format": "datetime-local",
+            "options": {
+              "flatpickr": {}
+            }
+          }
+        }
+      },
+      "default": []
+    }
+  }
+}

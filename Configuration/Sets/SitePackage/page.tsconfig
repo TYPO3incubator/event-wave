@@ -1,0 +1,2 @@
+# PageTSConfig
+TCEFORM.tt_content.CType.keepItems := addToList(surfcampevents_eventlist, surfcampevents_eventlocationsmap, surfcampevents_eventregistration, surfcampevents_eventtimeline)

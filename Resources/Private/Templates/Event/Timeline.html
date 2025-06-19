@@ -1,0 +1,74 @@
+<f:layout name="Default" />
+
+<f:section name="main">
+    <!-- <f:asset.css identifier="timeline-css" href="EXT:surfcamp_events/Resources/Public/Css/timeline.css"/> -->
+
+    <div class="container py-5">
+        <div class="timeline">
+            <div class="row g-4">
+                <div class="container my-5">
+                    <h2 class="text-center mb-4 h2">Timeline</h2>
+                    <ul class="timeline">
+                        <f:for each="{events}" as="event" iteration="i">
+                        
+                        <li class="timeline-item <f:if condition="{i.cycle} % 2 == 1">left<f:else>right</f:else></f:if>"">
+                            <div class="timeline-point <f:if condition='{i.cycle} % 2 == 1'>point-left<f:else>point-right</f:else></f:if>"></div>
+                            <div class="timeline-content <f:if condition='{event.endDateTime} && {event.endDateTime} < {f:format.date(date: \'now\', format: \'U\')}'>item-past</f:if>">
+    
+                                <div class="d-flex justify-content-between mb-2">
+                                    <h5 class="m-0">
+                                        <f:link.action
+                                            action="detail"
+                                            controller="Event"
+                                            arguments="{event: event}"
+                                            pageUid="{detailPageUid}"
+                                        >
+                                            {event.title}
+                                        </f:link.action>
+                                    </h5>
+
+                                    <div class="d-flex gap-2">
+                                    <span class="badge text-bg-secondary w-inherit h-inherit">
+                                        <f:format.case mode="upper">{event.eventType}</f:format.case>
+                                    </span>
+                                    <f:if condition="{event.endDateTime} && {event.endDateTime} < {f:format.date(date: 'now', format: 'U')}">
+                                        <span class="badge bg-secondary">PAST</span>
+                                    </f:if>
+                                    </div>
+                                </div>
+
+                                <f:if condition="{event.location}">
+                                    <small>
+                                        📍{event.location.name} - {event.location.street}
+                                        {event.location.streetNr}, {event.location.city}
+                                        {event.location.postalCode}, {event.location.country}
+                                        {event.location.postalCode}
+                                    </small>
+                                    <br />
+                                </f:if>
+                            
+                                <small>
+                                   
+                                    <f:if condition="{event.startDateTime}">
+                                        <f:then>
+                                            🕓 Start: {event.startDateTime -> f:format.date(format: 'd.m.Y g:i a')}<br>
+                                        </f:then>
+                                        <f:else>
+                                            🕓 Date: TBA<br>
+                                        </f:else>
+                                    </f:if>
+                                    <f:if condition="{event.endDateTime}">
+                                        🕡 End: {event.endDateTime ->
+                                        f:format.date(format: 'd.m.Y g:i a')}
+                                    </f:if>
+                                </small>
+                            </div>
+                        </li>
+                    </f:for>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</f:section>

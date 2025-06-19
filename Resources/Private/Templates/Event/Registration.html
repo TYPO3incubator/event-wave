@@ -1,0 +1,15 @@
+<f:flashMessages />
+
+<f:for each="{events}" as="event">
+    <f:form
+        action="confirmRegistration"
+        controller="Registration"
+        objectName="event"
+        object="{event}"
+        method="post">
+        <h2>Registration for {event.title}</h2>
+        <label for="email">Email</label>
+        <f:form.textfield name="email" id="email"></f:form.textfield>
+        <f:form.submit value="Submit registration"></f:form.submit>
+    </f:form>
+</f:for>

@@ -1,0 +1,89 @@
+<f:layout name="Default" />
+
+<f:section name="main">
+    <!-- Include Leaflet CSS -->
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+        crossorigin=""
+    />
+
+    <!-- Include Leaflet JS -->
+    <script
+        src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+        crossorigin=""
+    ></script>
+
+    <!-- Map container -->
+    <div
+        id="map"
+        style="height: 500px; z-index: 0"
+        data-locations="{locations -> f:format.json()}"
+    ></div>
+
+    <script>
+        const element = document.getElementById("map");
+        const eventLocations = JSON.parse(
+            element.getAttribute("data-locations")
+        );
+
+        var defaultLat = 40.14465498740908;
+        var defaultLng = -2.822603099553335;
+        var zoomLevel = 8;
+
+        if (eventLocations.length > 0) {
+            defaultLat = eventLocations[0].lat;
+            defaultLng = eventLocations[0].lng;
+        }
+
+        const customIcon = L.icon({
+            iconUrl: '<f:uri.resource path="Icons/marker-red-football.png" />',
+            iconSize: [56, 56], // adjust as needed
+            iconAnchor: [28, 51],
+            popupAnchor: [1, -44],
+            shadowUrl:
+                "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
+            shadowSize: [51, 51],
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            // Center of the map (first event, or default)
+            const map = L.map("map").setView(
+                [defaultLat, defaultLng],
+                zoomLevel
+            );
+
+            // Add OpenStreetMap tiles
+            L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+                attribution: "&copy; OpenStreetMap contributors",
+            }).addTo(map);
+
+            const markers = [];
+
+            eventLocations.forEach(function (event, index) {
+                const popupContent = `
+                    <a href="${event.eventDetailUrl}">
+                        <strong>${event.title}</strong>
+                    </a>`;
+
+                const marker = L.marker([event.lat, event.lng], {
+                    icon: customIcon,
+                }).addTo(map);
+
+                marker.bindPopup(popupContent);
+
+                markers.push(marker.getLatLng());
+            });
+
+            if (markers.length > 0) {
+                const bounds = L.latLngBounds(markers);
+                map.fitBounds(bounds, { padding: [150, 150] });
+            } else {
+                // Fallback view
+                map.setView([defaultLat, defaultLng], zoomLevel);
+            }
+        });
+    </script>
+</f:section>

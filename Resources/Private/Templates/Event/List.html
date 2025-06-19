@@ -1,0 +1,39 @@
+<f:layout name="Default" />
+
+<f:section name="main">
+    <f:asset.script
+        identifier="get-event-datetime"
+        src="EXT:surfcamp_events/Resources/Public/JavaScript/get_event_datetimes.js"
+    />
+
+    <h2>Events</h2>
+    <f:for each="{events}" as="event">
+        <div class="event" data-id="{event.uid}">
+            <f:link.action
+                action="detail"
+                controller="Event"
+                arguments="{event: event}"
+                pageUid="{detailPageUid}"
+            >
+                <h4>{event.title}</h4>
+            </f:link.action>
+            <f:if condition="{event.location}">
+                <small>
+                    📍 Location: {event.location.name} - {event.location.street}
+                    {event.location.streetNr}, {event.location.city}
+                    {event.location.postalCode}, {event.location.country}
+                    {event.location.postalCode}
+                </small>
+                <br />
+            </f:if>
+            <f:if condition="{event.startDateTime} || {event.endDateTime}">
+                <small>
+                    🕓 Date: <span class="event-start-date">{event.startDateTime -> f:format.date(format:
+                    'd.m.Y g:i a')}</span> - <span class="event-end-date">{event.endDateTime ->
+                    f:format.date(format: 'd.m.Y g:i a')}</span>
+                </small>
+            </f:if>
+            <p>{event.description -> f:format.crop(maxCharacters: 50)}</p>
+        </div>
+    </f:for>
+</f:section>
