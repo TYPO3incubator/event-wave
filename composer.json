@@ -1,9 +1,36 @@
 {
-    "name": "typo3-incubator/surfcamp-events",
+    "name": "typo3-incubator/event-wave",
     "type": "typo3-cms-extension",
     "description": "",
-    "license": ["GPL-2.0-or-later"],
-    "keywords": ["TYPO3 CMS"],
+    "authors": [
+        {
+            "name": "Alexander Grübling",
+            "role": "Developer"
+        },
+        {
+            "name": "Rafal Jania",
+            "role": "Developer"
+        },
+        {
+            "name": "Niles Langlotz",
+            "role": "Developer"
+        },
+        {
+            "name": "Lena Ebner",
+            "role": "Developer",
+            "homepage": "https://lenaebner.com"
+        },
+        {
+            "name": "Benjamin Franzke",
+            "role": "Mentor"
+        }
+    ],
+    "license": [
+        "GPL-2.0-or-later"
+    ],
+    "keywords": [
+        "TYPO3 CMS"
+    ],
     "require": {
         "typo3/cms-core": "^13.4"
     },
